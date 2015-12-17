@@ -1,0 +1,38 @@
+#version 400
+
+layout( quads ) in;
+
+out vec3 TENormal;
+out vec4 TEPosition;
+
+uniform int TessLevel;
+uniform mat4 MVP;
+uniform mat4 ModelViewMatrix;
+uniform mat3 NormalMatrix;
+
+
+void main()
+{
+	float u = gl_TessCoord.x;
+    	float v = gl_TessCoord.y;
+
+	float indexu = u*TessLevel;
+	float indexv = v*TessLevel;
+
+	float ind = indexu*(TessLevel+1)*2+indexv*2;
+
+	int index = int(ind);
+
+	vec3 pt = gl_in[index].gl_Position.xyz;
+
+    	vec3 no = gl_in[index+1].gl_Position.xyz;
+
+	TEPosition = vec4(pt,1.0);
+
+    // Transform to clip coordinates
+    gl_Position = MVP * TEPosition;
+
+    // Convert to camera coordinates
+    TEPosition = ModelViewMatrix * TEPosition;
+    TENormal = normalize(NormalMatrix * no);
+}
