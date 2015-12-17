@@ -82,6 +82,7 @@ void Scene::resize(int w, int h)
                           0.0f,h2,0.0f,0.0f,
                           0.0f,0.0f,1.0f,0.0f,
                           w2+0, h2+0, 0.0f, 1.0f);
+    m_projection.setToIdentity();
     m_projection.perspective(40.0f, (float)w/h, 0.3f, 10000.0f);
 }
 
